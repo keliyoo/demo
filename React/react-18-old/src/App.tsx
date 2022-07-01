@@ -25,7 +25,7 @@ function App() {
     return (
         <div className='App'>
             <header className='App-header'>
-                <p>Hello React-18!</p>
+                <p>Hello React-18-old!</p>
                 <p>渲染次数：{renderCount.current}</p>
                 <p>
                     <button type='button' onClick={() => setCount(count => count + 1)}>

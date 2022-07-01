@@ -1,7 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+interface MyButtonProps {
+    color: string;
+}
+
+const MyButton: React.FC<MyButtonProps> = ({ children }) => {
+    // 在 React 18 的 FC 中，不存在 children 属性，需要手动申明
+    return <div>{children}</div>;
+};
+
+declare const enum AAA {
+    UP,
+    DOWN,
+}
+const a:string = AAA['1']
 function App() {
     const renderCount = useRef(0);
 
@@ -9,6 +22,7 @@ function App() {
 
     useEffect(() => {
         console.log('渲染完成');
+        setCount(count => count + 1)
     }, []);
     console.log('render');
     renderCount.current++;
@@ -16,7 +30,7 @@ function App() {
     return (
         <div className='App'>
             <header className='App-header'>
-                <p>Hello React18!</p>
+                <p>Hello React-17!</p>
                 <p>渲染次数：{renderCount.current}</p>
                 <p>
                     <button type='button' onClick={() => setCount(count => count + 1)}>
