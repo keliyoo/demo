@@ -1,13 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-(window as any).react = React;
-const root = document.getElementById('root')!;
+import 'antd/dist/antd.css'
 
-const oldLog = console.log
-window.console.log = function (...a) {
-    oldLog('react-17', ...a)
-}
+const root = document.getElementById('root')!;
 
 ReactDOM.render(
     <React.StrictMode>
