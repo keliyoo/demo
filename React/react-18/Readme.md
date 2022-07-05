@@ -4,6 +4,13 @@
 
 - 放弃了对 ie11 的支持
 - 组件props的 TypeScript 定义中不再包含children，需要显式的定义
+- 去除了 卸载组件时的更新状态警告 [github讨论](https://github.com/reactwg/react-18/discussions/82)
+
+```js
+// 卸载组件时的更新状态警告
+react_devtools_backend.js:4026 
+       Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+```
 
 ## 新特性
 

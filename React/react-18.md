@@ -8,6 +8,12 @@
 
 - 组件props的 TypeScript 定义中不再包含children，需要显式的定义
 
+## 严格模式
+
+- React 会对每个组件进行两次渲染
+  - React17会隐藏第二次的log, 18显示
+- 18初始会对组件进行卸载安装一次
+
 ## Render Api
 
 - 18版本保留了对于旧的Render Api的支持
