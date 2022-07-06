@@ -5,8 +5,10 @@ import './App.css';
 
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokaiSublime } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import React from 'react';
 
 let initViewNum = 0;
+let effectNum = 0;
 const InitView: React.FC = () => {
     const renderCount = useRef(0);
     const useEffectrCount = useRef(0);
@@ -19,14 +21,16 @@ const InitView: React.FC = () => {
         };
     }, []);
     useEffect(() => {
-        console.log('useEffectrCount', ++useEffectrCount.current);
+        effectNum += 1;
+        console.log('useEffectrCount', new Date().toJSON(), ++useEffectrCount.current);
+        sessionStorage.setItem('InitView_effectNum', effectNum + '');
     });
-    console.log(Date.now(), ++renderCount.current, ++initViewNum);
-    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum);
+    console.log(new Date().toJSON(), ++renderCount.current, ++initViewNum);
+    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum + ' '+ effectNum);
 
     return (
         <p>
-            组件执行次数：{renderCount.current} {initViewNum}
+            组件执行次数：{renderCount.current} - {initViewNum} - {effectNum}
             <br />
             <span>
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
@@ -35,6 +39,7 @@ const InitView: React.FC = () => {
     );
 };
 const initViewString = `let initViewNum = 0;
+let effectNum = 0;
 const InitView: React.FC = () => {
     const renderCount = useRef(0);
     const useEffectrCount = useRef(0);
@@ -47,14 +52,16 @@ const InitView: React.FC = () => {
         };
     }, []);
     useEffect(() => {
-        console.log('useEffectrCount', ++useEffectrCount.current);
+        effectNum += 1;
+        console.log('useEffectrCount', new Date().toJSON(), ++useEffectrCount.current);
+        sessionStorage.setItem('InitView_effectNum', effectNum + '');
     });
-    console.log(Date.now(), ++renderCount.current, ++initViewNum);
-    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum);
+    console.log(new Date().toJSON(), ++renderCount.current, ++initViewNum);
+    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum + ' '+ effectNum);
 
     return (
         <p>
-            组件执行次数：{renderCount.current} {initViewNum}
+            组件执行次数：{renderCount.current} - {initViewNum} - {effectNum}
             <br />
             <span>
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
@@ -227,6 +234,90 @@ const clickChangeString = `const ClickChange: React.FC = () => {
         </div>
     );
 };`;
+
+class ClassComponent extends React.Component<any, { count1: number; count2: number }> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            count1: 0,
+            count2: 0,
+        };
+    }
+
+    handleClick1 = () => {
+        const { count1, count2 } = this.state;
+        this.setState({ count1: count1 + 1 });
+        console.log('count1', this.state);
+        setTimeout(() => {
+            this.setState({ count2: count2 + 2 });
+            console.log('count2', this.state);
+        });
+    };
+
+    handleClick2 = () => {
+        this.setState(({ count1 }) => ({ count1: count1 + 1 }));
+        console.log('count1', this.state);
+        setTimeout(() => {
+            this.setState(({ count2 }) => ({ count2: count2 + 1 }));
+            console.log('count2', this.state);
+        });
+    };
+
+    render() {
+        const { count1, count2 } = this.state;
+        return (
+            <div>
+                <Button onClick={this.handleClick1}>对象式更新</Button>
+                <Button onClick={this.handleClick2}>函数式更新</Button>
+                <div>count1: {count1}</div>
+                <div>count2: {count2}</div>
+            </div>
+        );
+    }
+}
+const classComponentString = `class ClassComponent extends React.Component<any, { count1: number; count2: number }> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            count1: 0,
+            count2: 0,
+        };
+    }
+
+    handleClick1 = () => {
+        const { count1, count2 } = this.state;
+        this.setState({ count1: count1 + 1 });
+        console.log('count1', this.state);
+        setTimeout(() => {
+            this.setState({ count2: count2 + 2 });
+            console.log('count2', this.state);
+        });
+    };
+
+    handleClick2 = () => {
+        this.setState(({ count1 }) => ({ count1: count1 + 1 }));
+        console.log('count1', this.state);
+        setTimeout(() => {
+            this.setState(({ count2 }) => ({ count2: count2 + 1 }));
+            console.log('count2', this.state);
+        });
+    };
+
+    render() {
+        const { count1, count2 } = this.state;
+        return (
+            <div>
+                <Button onClick={this.handleClick1}>对象式更新</Button>
+                <Button onClick={this.handleClick2}>函数式更新</Button>
+                <div>count1: {count1}</div>
+                <div>count2: {count2}</div>
+            </div>
+        );
+    }
+}`
+
 const AsyncSetState: React.FC = () => {
     const renderCount = useRef(0);
     const [state, setState] = useState(0);
@@ -270,26 +361,39 @@ const asyncSetStateString = `const AsyncSetState: React.FC = () => {
     return <p>组件执行次数：{renderCount.current}, 异步获取值：</p>;
 };`;
 
-type SelectItemArr = ['InitView', 'EffectChange', 'ClickChange', 'AsyncSetState'];
+const EmptyComponent: React.FC = () => {
+    return  undefined as unknown as null;
+};
+const emptyComponentString = `const EmptyComponent: React.FC = () => {
+    return  undefined as unknown as null;
+};`
+
+type SelectItemArr = ['InitView', 'EffectChange', 'ClickChange', 'ClassComponent', 'AsyncSetState', 'EmptyComponent'];
 type SelectItem = typeof selectItemArr[number];
-const selectItemArr: SelectItemArr = ['InitView', 'EffectChange', 'ClickChange', 'AsyncSetState'];
+const selectItemArr: SelectItemArr = ['InitView', 'EffectChange', 'ClickChange', 'ClassComponent', 'AsyncSetState', 'EmptyComponent'];
 const selectItemLabelObj: Record<SelectItem, string> = {
     InitView: '测试初始化',
     EffectChange: '通过effect设置值',
     ClickChange: '点击事件设置多个状态',
+    ClassComponent: '批处理对class组件的一点影响',
     AsyncSetState: '异步设置状态',
+    EmptyComponent: '空组件'
 };
 const codeStringObj: Record<SelectItem, string> = {
     InitView: initViewString,
     EffectChange: effectChangeString,
     ClickChange: clickChangeString,
+    ClassComponent: classComponentString,
     AsyncSetState: asyncSetStateString,
+    EmptyComponent: emptyComponentString,
 };
-const componentObj: Record<SelectItem, React.FC> = {
+const componentObj: Record<SelectItem, React.FC | typeof ClassComponent> = {
     InitView,
     EffectChange,
     ClickChange,
+    ClassComponent,
     AsyncSetState,
+    EmptyComponent,
 };
 
 function App() {
@@ -300,7 +404,7 @@ function App() {
             <header className='App-header'>
                 <p>Hello React-17!</p>
 
-                <Select value={selectVal} onChange={val => setSelectVal(val)} style={{ width: 120 }}>
+                <Select value={selectVal} onChange={val => setSelectVal(val)} style={{ width: 320 }}>
                     {selectItemArr.map(item => (
                         <Select.Option value={item} key={item}>
                             {selectItemLabelObj[item]}
@@ -308,7 +412,7 @@ function App() {
                     ))}
                 </Select>
 
-                <Row style={{ minHeight: '50vh', padding: '20px', width: '100%' }}>
+                <Row style={{ minHeight: '50vh', padding: '20px', width: '100%' }} wrap={false}>
                     <Col style={{ overflow: 'auto', width: '70%', maxWidth: '100%', textAlign: 'left', fontSize: '20px' }}>
                         <SyntaxHighlighter language='typescript' style={monokaiSublime}>
                             {codeStringObj[selectVal] || ''}

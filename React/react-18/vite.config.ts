@@ -4,7 +4,7 @@ import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
-    console.log('', loadEnv(mode, process.cwd()).VITE_APP_TITLE);
+    console.log('',mode, loadEnv(mode, process.cwd()).VITE_APP_TITLE);
     return defineConfig({
         build: {
             rollupOptions: {
@@ -13,6 +13,7 @@ export default ({ mode }) => {
                     old: resolve(__dirname, 'old.html'),
                 },
             },
+            outDir: mode === 'development' ? 'dist-dev' : 'dist',
         },
         server: {
             port: 10018,

@@ -1,0 +1,1 @@
+import{a as e,j as o,A as l}from"./antd.4195d639.js";var s="E:\\File\\code\\GitHub\\demo\\React\\react-18\\src\\mainOldRenderApi.tsx";const t=document.getElementById("root");console.log("old");e.render(o.exports.jsxDEV(l,{},void 0,!1,{fileName:s,lineNumber:10,columnNumber:17},globalThis),t,()=>{console.log("\u6E32\u67D3\u5B8C\u6210")});
