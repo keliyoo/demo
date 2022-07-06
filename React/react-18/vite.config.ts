@@ -18,6 +18,6 @@ export default ({ mode }) => {
         server: {
             port: 10018,
         },
-        plugins: [react()],
+        plugins: [react({jsxRuntime: 'classic',})],
     });
 };
