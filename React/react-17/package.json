@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build:dev": " vite build --mode development ",
-    "build": " vite build",
+    "build:dev": " vite build --mode development --base ./",
+    "build": " vite build --base ./",
     "preview:dev": "vite preview --mode development",
     "preview": "vite preview"
   },
