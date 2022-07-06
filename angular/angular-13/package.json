@@ -1,0 +1,12 @@
+{
+    "name": "angular",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "new": "ng new demo"
+    },
+    "devDependencies": {
+        "@angular/cli": "^13.3.8"
+    }
+}
