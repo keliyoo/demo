@@ -1,0 +1,63 @@
+import { Component } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  FormControl,
+} from '@angular/forms';
+import { FormArray } from '@angular/forms';
+
+@Component({
+  selector: 'app-form-demo',
+  templateUrl: './form-demo.component.html',
+  styleUrls: ['./form-demo.component.scss'],
+})
+export class FormDemoComponent {
+  public openForm: FormGroup;
+
+  get aliases() {
+    return this.openForm.get('aliases') as FormArray;
+  }
+
+  constructor(private fb: FormBuilder) {
+    const control = new FormControl('some value', { initialValueIsDefault: true });
+    console.log(control.value); // 'Nancy'
+
+    control.reset();
+
+    console.log(control.value); // 'Drew'
+
+    this.openForm = this.fb.group({
+      firstName: new FormControl('Nancy'),
+      lastName: new FormControl('Nancy', { initialValueIsDefault: true }),
+      address: this.fb.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        zip: [''],
+      }),
+      aliases: this.fb.array([this.fb.control('')]),
+    });
+  }
+
+  updateProfile() {
+    this.openForm.patchValue({
+      firstName: 'Nancy',
+      address: {
+        street: '123 Drew Street',
+      },
+    });
+  }
+
+  addAlias() {
+    this.aliases.push(this.fb.control(''));
+  }
+
+  onSubmit() {
+    this.openForm.controls['firstName'].reset();
+    this.openForm.controls['lastName'].reset();
+    // TODO: Use EventEmitter with form value
+    console.warn(this.openForm.value);
+  }
+}
