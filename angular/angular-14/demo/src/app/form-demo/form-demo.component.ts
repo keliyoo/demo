@@ -32,7 +32,7 @@ export class FormDemoComponent {
     console.log(control.value); // 'Drew'
 
     this.openForm = this.fb.group({
-      firstName: new FormControl('Nancy'),
+      firstName: new FormControl<string>('Nancy'),
       lastName: new FormControl('Nancy', { nonNullable: true }),
       address: this.fb.group<{ [key in string]: string[] }>({
         street: [''],
@@ -40,7 +40,9 @@ export class FormDemoComponent {
         state: [''],
         zip: [''],
       }),
-      aliases: this.fb.array([this.fb.control('')]),
+      aliases: this.fb.array<AbstractControl<string | null>>([
+        this.fb.control(''),
+      ]),
     });
   }
   onEmailChange() {
