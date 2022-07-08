@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FormDemoComponent } from './form-demo/form-demo.component';
 
-const routes: Routes = [{ path: '/', component: FormDemoComponent }];
+const routes: Routes = [{ path: '**', component: FormDemoComponent }];
 
 @NgModule({
   imports: [

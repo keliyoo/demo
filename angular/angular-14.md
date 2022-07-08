@@ -49,3 +49,8 @@ RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' })
 - 14将 ComponentFactory 标记为弃用, 推荐使用 Component, 之前版本为共存状态
 - 13版本已经将编译器 View Engine 标记为弃用， 从9开始默认编译器已经为Ivy
   - NgModuleFactory Compiler CompilerFactory 等也被标记为弃用
+
+## 示例
+
+[13](https://keliyoo.github.io/demo/angular/angular-13/demo/dist/demo/)
+[14](https://keliyoo.github.io/demo/angular/angular-14/demo/dist/demo/)
