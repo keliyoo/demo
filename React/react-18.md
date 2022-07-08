@@ -10,15 +10,16 @@
 
 ## 严格模式
 
-- constructor函数运行2次
-- getDerivedStateFromProps函数运行2次
-- shouldComponentUpdate函数运行2次
-- render函数第一次运行2次，update的时候运行2次
-- 函数组件体
-- hooks:传入useState,useMemo或useReducer的函数会运行2次
-
-- React17会隐藏第二次打印的log, 18改为显示
-- React18初始会对组件进行卸载安装一次
+- 和17共有的
+  - constructor函数运行2次
+  - getDerivedStateFromProps函数运行2次
+  - shouldComponentUpdate函数运行2次
+  - render函数第一次运行2次，update的时候运行2次
+  - 函数组件体
+  - hooks:传入useState,useMemo或useReducer的函数会运行2次
+- 差异
+  - React17会隐藏第二次打印的log, 18改为显示
+  - React18初始会对组件进行卸载安装一次
 
 ## Render Api
 
