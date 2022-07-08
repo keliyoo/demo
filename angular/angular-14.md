@@ -21,7 +21,7 @@
   - 从11开始 enabled 和 enabledBlocking功能相同
   - 初始导航在创建根组件之前开始。引导程序将被阻止，直到完成初始导航为止。该值是让服务器渲染正常工作所必需的
   - 14开始完全舍弃 enabled
-- --configuration不能与ng run一起使用
+- --configuration 不能与 ng run 一起使用
   - `ng run project:server --configuration test => ng run project:server:test`
 
 ```js
