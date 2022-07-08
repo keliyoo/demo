@@ -46,7 +46,10 @@ let effectNum = 0;
 const InitView: React.FC = () => {
     const renderCount = useRef(0);
     const useEffectrCount = useRef(0);
-    const [state, setState] = useState(0);
+    const [state, setState] = useState(() => {
+        console.log('useState');
+        return 0;
+    });
 
     useEffect(() => {
         console.log('InitView useEffect');
@@ -60,7 +63,7 @@ const InitView: React.FC = () => {
         sessionStorage.setItem('InitView_effectNum', effectNum + '');
     });
     console.log(new Date().toJSON(), ++renderCount.current, ++initViewNum);
-    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum + ' '+ effectNum);
+    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum + ' ' + effectNum);
 
     return (
         <p>
