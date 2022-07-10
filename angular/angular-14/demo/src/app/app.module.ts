@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatMenuModule } from '@angular/material/menu';
 import {MatInputModule} from '@angular/material/input';
+import { StandaloneDemoComponent } from './standalone-demo/standalone-demo.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import {MatInputModule} from '@angular/material/input';
     BrowserAnimationsModule,
     MatMenuModule,
     MatInputModule,
+    StandaloneDemoComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

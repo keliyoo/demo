@@ -3,7 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FormDemoComponent } from './form-demo/form-demo.component';
 
-const routes: Routes = [{ path: '**', component: FormDemoComponent }];
+const routes: Routes = [
+  {
+    path: 'standalone',
+    loadComponent: () =>
+      import('./standalone-demo/standalone-demo.component').then(
+        (mod) => mod.StandaloneDemoComponent
+      ),
+  },
+  { path: '**', component: FormDemoComponent },
+];
 
 @NgModule({
   imports: [

@@ -44,6 +44,55 @@ RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' })
 
 ```
 
+### 新特性 [独立组件](https://angular.cn/guide/standalone-components#lazy-loading-a-standalone-component)
+
+- 设置standalone: true启用独立组件
+- 独立组件直接使用imports指定它们的依赖项，而不是通过 NgModule 获取它们
+- 可以使用loadComponent异步加载独立组件
+- 可以像导入 NgModule 一样导入独立组件
+- 使用独立组件引导应用程序
+
+```js
+// 独立组件直接使用imports指定它们的依赖项
+import { MatButtonModule } from '@angular/material/button';
+@Component({
+    standalone: true,
+    selector: 'app-standalone-demo',
+    templateUrl: './standalone-demo.component.html',
+    styleUrls: ['./standalone-demo.component.scss'],
+    imports: [MatButtonModule]
+  })
+  export class StandaloneDemoComponent implements OnInit  {
+    ngOnInit(): void {
+  }
+}
+
+// 可以使用loadComponent异步加载独立组件
+{
+  path: 'standalone',
+  loadComponent: () => import('./standalone-demo/standalone-demo.component').then((mod) => mod.StandaloneDemoComponent),
+},
+
+// 像导入 NgModule 一样导入独立组件
+import { StandaloneDemoComponent } from './standalone-demo/standalone-demo.component';
+@NgModule({
+  imports: [
+    StandaloneDemoComponent,
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+
+// 使用独立组件引导应用程序
+// index.html添加入口
+<app-standalone-demo></app-standalone-demo>
+// main.ts设置引导
+import { bootstrapApplication } from '@angular/platform-browser';
+import { StandaloneDemoComponent } from './app/standalone-demo/standalone-demo.component';
+bootstrapApplication(StandaloneDemoComponent);
+```
+
 ## 标记为弃用
 
 - 14将 ComponentFactory 标记为弃用, 推荐使用 Component, 之前版本为共存状态

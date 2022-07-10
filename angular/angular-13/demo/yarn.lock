@@ -128,9 +128,9 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/cdk@^13.3.9":
+"@angular/cdk@^13.3.0":
   version "13.3.9"
-  resolved "https://repo.huaweicloud.com/repository/npm/@angular/cdk/-/cdk-13.3.9.tgz#a177196e872e29be3f84d3a50f778d361c689ff7"
+  resolved "https://registry.npmmirror.com/@angular/cdk/-/cdk-13.3.9.tgz#a177196e872e29be3f84d3a50f778d361c689ff7"
   integrity sha512-XCuCbeuxWFyo3EYrgEYx7eHzwl76vaWcxtWXl00ka8d+WAOtMQ6Tf1D98ybYT5uwF9889fFpXAPw98mVnlo3MA==
   dependencies:
     tslib "^2.3.0"
@@ -206,9 +206,9 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/material@^13.3.9":
+"@angular/material@^13.3.0":
   version "13.3.9"
-  resolved "https://repo.huaweicloud.com/repository/npm/@angular/material/-/material-13.3.9.tgz#efd8ab5800b654df01e36426391d31531e412425"
+  resolved "https://registry.npmmirror.com/@angular/material/-/material-13.3.9.tgz#efd8ab5800b654df01e36426391d31531e412425"
   integrity sha512-FU8lcMgo+AL8ckd27B4V097ZPoIZNRHiCe3wpgkImT1qC0YwcyXZVn0MqQTTFSdC9a/aI8wPm3AbTClJEVw5Vw==
   dependencies:
     tslib "^2.3.0"
