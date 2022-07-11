@@ -9,9 +9,9 @@
 - [更新信息](https://angular.cn/guide/update-to-latest-version)
 - [升级指南](https://update.angular.io/)
 - ng update @angular/core@14 @angular/cli@14
+- 如果使用官网组件库使用对应angular版本的版本 ng update @angular/material@14
 - 其他相应的跟随angular版本的包也需要升级
   - @nguniversal/builders@14  @angular-eslint/builder@14 @angular-eslint/schematics@14 @nguniversal/express-engine@14 ngx-cookie-service@14等等
-- 如果使用官网组件库使用对应angular版本的版本 ng update @angular/material@14
 
 ## 主要更改
 
@@ -46,6 +46,8 @@ RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' })
 
 ### 新特性 [独立组件](https://angular.cn/guide/standalone-components#lazy-loading-a-standalone-component)
 
+> 独立组件特性可用于开发人员预览。它已准备好供你尝试；但它可能会在稳定之前发生变化。
+
 - 设置standalone: true启用独立组件
 - 独立组件直接使用imports指定它们的依赖项，而不是通过 NgModule 获取它们
 - 可以使用loadComponent异步加载独立组件
@@ -56,14 +58,14 @@ RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' })
 // 独立组件直接使用imports指定它们的依赖项
 import { MatButtonModule } from '@angular/material/button';
 @Component({
-    standalone: true,
-    selector: 'app-standalone-demo',
-    templateUrl: './standalone-demo.component.html',
-    styleUrls: ['./standalone-demo.component.scss'],
-    imports: [MatButtonModule]
-  })
-  export class StandaloneDemoComponent implements OnInit  {
-    ngOnInit(): void {
+  standalone: true,
+  selector: 'app-standalone-demo',
+  templateUrl: './standalone-demo.component.html',
+  styleUrls: ['./standalone-demo.component.scss'],
+  imports: [MatButtonModule]
+})
+export class StandaloneDemoComponent implements OnInit {
+  ngOnInit(): void {
   }
 }
 
