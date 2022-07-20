@@ -1,15 +1,15 @@
 {
   "name": "my-react-page1",
   "private": false,
-  "version": "0.0.2",
+  "version": "0.0.6",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@lpf/utill": "^0.0.2",
-    "@mymo/utils": "^0.0.2",
+    "@lpf/utill": "^0.0.6",
+    "@mymo/utils": "^0.0.6",
     "classnames": "^2.3.1",
     "lodash": "^4.17.21",
     "react": "^18.0.0",

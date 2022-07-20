@@ -1,14 +1,14 @@
 {
   "name": "my-react17-page2",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.6",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mymo/utils": "^0.0.2",
+    "@mymo/utils": "^0.0.6",
     "lodash": "^4.17.21",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
