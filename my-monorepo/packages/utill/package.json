@@ -21,9 +21,12 @@
         "url": "git+https://github.com/keliyoo/demo.git"
     },
     "scripts": {
-        "test": "echo \"Error: run tests from root\" && exit 1"
+        "test": "echo \"Error: run tests from root\""
     },
     "bugs": {
         "url": "https://github.com/keliyoo/demo/issues"
+    },
+    "dependencies": {
+        "@mymo/utils": "^0.0.6"
     }
 }

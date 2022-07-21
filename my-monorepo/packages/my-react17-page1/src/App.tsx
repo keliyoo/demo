@@ -2,6 +2,7 @@ import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import { isIe } from '@mymo/utils'
+console.log(isIe);
 
 function App() {
   const [count, setCount] = useState(0)

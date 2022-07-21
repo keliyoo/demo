@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mymo/utils": "^0.0.6",
     "vue": "^3.2.25"
   },
   "devDependencies": {
