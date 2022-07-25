@@ -7,6 +7,14 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokaiSublime } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import React from 'react';
 
+const ShowLabelValue: React.FC<{ lable: string; value: string | number }> = ({ lable, value }) => {
+    return (
+        <p>
+            <span className='vl'>{lable}:</span> <span className='vr'>{value}</span>
+        </p>
+    );
+};
+
 let initViewNum = 0;
 let effectNum = 0;
 const InitView: React.FC = () => {
@@ -18,27 +26,32 @@ const InitView: React.FC = () => {
     });
 
     useEffect(() => {
-        console.log('InitView useEffect');
+        console.log('空数组依赖useEffect InitView useEffect');
         return () => {
-            console.log('InitView unUseEffect');
+            console.log('空数组依赖useEffect InitView unUseEffect');
         };
     }, []);
     useEffect(() => {
         effectNum += 1;
-        console.log('useEffectrCount', new Date().toJSON(), ++useEffectrCount.current);
-        sessionStorage.setItem('InitView_effectNum', effectNum + '');
+        console.log(`无依赖数组useEffect effectNum: ${effectNum}, useEffectrCount.current: ${++useEffectrCount.current}`);
     });
-    console.log(new Date().toJSON(), ++renderCount.current, ++initViewNum);
-    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum + ' ' + effectNum);
+
+    console.group();
+    console.log('initViewNum', ++initViewNum);
+    console.log('renderCount.current', ++renderCount.current);
+    console.groupEnd();
 
     return (
-        <p>
-            组件执行次数：{renderCount.current} - {initViewNum} - {effectNum}
+        <div>
+            <ShowLabelValue lable='initViewNum' value={initViewNum}></ShowLabelValue>
+            <ShowLabelValue lable='renderCount.current' value={renderCount.current}></ShowLabelValue>
+            <ShowLabelValue lable='effectNum' value={effectNum}></ShowLabelValue>
+
             <br />
             <span>
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
             </span>
-        </p>
+        </div>
     );
 };
 const initViewString = `let initViewNum = 0;
@@ -52,27 +65,32 @@ const InitView: React.FC = () => {
     });
 
     useEffect(() => {
-        console.log('InitView useEffect');
+        console.log('空数组依赖useEffect InitView useEffect');
         return () => {
-            console.log('InitView unUseEffect');
+            console.log('空数组依赖useEffect InitView unUseEffect');
         };
     }, []);
     useEffect(() => {
         effectNum += 1;
-        console.log('useEffectrCount', new Date().toJSON(), ++useEffectrCount.current);
-        sessionStorage.setItem('InitView_effectNum', effectNum + '');
+        console.log(\`无依赖数组useEffect effectNum: \${effectNum}, useEffectrCount.current: \${++useEffectrCount.current}\`);
     });
-    console.log(new Date().toJSON(), ++renderCount.current, ++initViewNum);
-    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum + ' ' + effectNum);
+
+    console.group();
+    console.log('initViewNum', ++initViewNum);
+    console.log('renderCount.current', ++renderCount.current);
+    console.groupEnd();
 
     return (
-        <p>
-            组件执行次数：{renderCount.current} - {initViewNum} - {effectNum}
+        <div>
+            <ShowLabelValue lable='initViewNum' value={initViewNum}></ShowLabelValue>
+            <ShowLabelValue lable='renderCount.current' value={renderCount.current}></ShowLabelValue>
+            <ShowLabelValue lable='effectNum' value={effectNum}></ShowLabelValue>
+
             <br />
             <span>
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
             </span>
-        </p>
+        </div>
     );
 };`;
 
@@ -92,7 +110,6 @@ const EffectChange: React.FC = () => {
         setStateFun(state => state + 1);
     }, [state]);
     console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('EffectChange_renderCount', renderCount.current + '');
 
     return (
         <p>
@@ -102,8 +119,8 @@ const EffectChange: React.FC = () => {
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
             </span>
             <br />
-            <span>state1: {state1}</span>
-            <span>stateFun: {stateFun}</span>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <ShowLabelValue lable='stateFun' value={stateFun}></ShowLabelValue>
         </p>
     );
 };
@@ -114,7 +131,6 @@ const effectChangeString = `const EffectChange: React.FC = () => {
     const [stateFun, setStateFun] = useState(0);
     useEffect(() => {
         console.log('EffectChange useEffect');
-        setState(state => state + 1);
         return () => {
             console.log('EffectChange unUseEffect');
         };
@@ -124,7 +140,6 @@ const effectChangeString = `const EffectChange: React.FC = () => {
         setStateFun(state => state + 1);
     }, [state]);
     console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('EffectChange_renderCount', renderCount.current + '');
 
     return (
         <p>
@@ -134,8 +149,8 @@ const effectChangeString = `const EffectChange: React.FC = () => {
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
             </span>
             <br />
-            <span>state1: {state1}</span>
-            <span>stateFun: {stateFun}</span>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <ShowLabelValue lable='stateFun' value={stateFun}></ShowLabelValue>
         </p>
     );
 };`;
@@ -148,18 +163,22 @@ const ClickChange: React.FC = () => {
         console.log('ClickChange useEffect');
         return () => {
             console.log('ClickChange unUseEffect');
-            sessionStorage.removeItem('ClickChange_renderCount');
         };
     }, []);
-    console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('ClickChange_renderCount', renderCount.current + '');
+    console.group();
+    console.log('renderCount.current', ++renderCount.current);
+    console.log('state1', state1);
+    console.log('state2', state2);
+    console.groupEnd();
 
     return (
         <div>
-            <p>组件执行次数：{renderCount.current}</p>
-            <p>state1：{state1}</p>
-            <p>state2：{state2}</p>
+            <ShowLabelValue lable='renderCount.current' value={renderCount.current}></ShowLabelValue>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <ShowLabelValue lable='state2' value={state2}></ShowLabelValue>
+
             <Button
+                className='w-full'
                 onClick={() => {
                     setState1(val => val + 1);
                     setState2(val => val + 1);
@@ -167,7 +186,9 @@ const ClickChange: React.FC = () => {
             >
                 批量更新 1 & 2
             </Button>
+
             <Button
+                className='w-full'
                 onClick={() => {
                     setTimeout(() => {
                         setState1(val => val + 1);
@@ -178,6 +199,7 @@ const ClickChange: React.FC = () => {
                 setTimeout中批量更新 1 & 2
             </Button>
             <Button
+                className='w-full'
                 onClick={() => {
                     flushSync(() => {
                         setState1(val => val + 1);
@@ -198,18 +220,22 @@ const clickChangeString = `const ClickChange: React.FC = () => {
         console.log('ClickChange useEffect');
         return () => {
             console.log('ClickChange unUseEffect');
-            sessionStorage.removeItem('ClickChange_renderCount');
         };
     }, []);
-    console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('ClickChange_renderCount', renderCount.current + '');
+    console.group();
+    console.log('renderCount.current', ++renderCount.current);
+    console.log('state1', state1);
+    console.log('state2', state2);
+    console.groupEnd();
 
     return (
         <div>
-            <p>组件执行次数：{renderCount.current}</p>
-            <p>state1：{state1}</p>
-            <p>state2：{state2}</p>
+            <ShowLabelValue lable='renderCount.current' value={renderCount.current}></ShowLabelValue>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <ShowLabelValue lable='state2' value={state2}></ShowLabelValue>
+
             <Button
+                className='w-full'
                 onClick={() => {
                     setState1(val => val + 1);
                     setState2(val => val + 1);
@@ -217,7 +243,9 @@ const clickChangeString = `const ClickChange: React.FC = () => {
             >
                 批量更新 1 & 2
             </Button>
+
             <Button
+                className='w-full'
                 onClick={() => {
                     setTimeout(() => {
                         setState1(val => val + 1);
@@ -228,6 +256,7 @@ const clickChangeString = `const ClickChange: React.FC = () => {
                 setTimeout中批量更新 1 & 2
             </Button>
             <Button
+                className='w-full'
                 onClick={() => {
                     flushSync(() => {
                         setState1(val => val + 1);
@@ -274,10 +303,15 @@ class ClassComponent extends React.Component<any, { count1: number; count2: numb
         const { count1, count2 } = this.state;
         return (
             <div>
-                <Button onClick={this.handleClick1}>对象式更新</Button>
-                <Button onClick={this.handleClick2}>函数式更新</Button>
-                <div>count1: {count1}</div>
-                <div>count2: {count2}</div>
+                <ShowLabelValue lable='count1' value={count1}></ShowLabelValue>
+                <ShowLabelValue lable='count2' value={count2}></ShowLabelValue>
+                <br />
+                <Button className='w-full' onClick={this.handleClick1}>
+                    对象式更新
+                </Button>
+                <Button className='w-full' onClick={this.handleClick2}>
+                    函数式更新
+                </Button>
             </div>
         );
     }
@@ -315,14 +349,15 @@ const classComponentString = `class ClassComponent extends React.Component<any, 
         const { count1, count2 } = this.state;
         return (
             <div>
-                <Button onClick={this.handleClick1}>对象式更新</Button>
-                <Button onClick={this.handleClick2}>函数式更新</Button>
-                <div>count1: {count1}</div>
-                <div>count2: {count2}</div>
+                <ShowLabelValue lable='count1' value={count1}></ShowLabelValue>
+                <ShowLabelValue lable='count2' value={count2}></ShowLabelValue>
+                <br />
+                <Button className='w-full' onClick={this.handleClick1}>对象式更新</Button>
+                <Button className='w-full' onClick={this.handleClick2}>函数式更新</Button>
             </div>
         );
     }
-}`
+}`;
 
 const AsyncSetState: React.FC = () => {
     const renderCount = useRef(0);
@@ -339,7 +374,6 @@ const AsyncSetState: React.FC = () => {
         }, 1000);
     }, [state]);
     console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('AsyncSetState_renderCount', renderCount.current + '');
 
     return (
         <p>
@@ -358,13 +392,16 @@ const asyncSetStateString = `const AsyncSetState: React.FC = () => {
     }, []);
     useEffect(() => {
         setTimeout(() => {
-            setState(state => state + 1)
+            setState(state => state + 1);
         }, 1000);
-    }, [state])
+    }, [state]);
     console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('AsyncSetState_renderCount', renderCount.current + '');
 
-    return <p>组件执行次数：{renderCount.current}, 异步获取值：</p>;
+    return (
+        <p>
+            组件执行次数：{renderCount.current}, 异步设置值：{state}
+        </p>
+    );
 };`;
 
 const EmptyComponent: React.FC = () => {
@@ -385,7 +422,21 @@ const StartTransitionDemo: React.FC = () => {
         setState2(state2 + 1);
     }, [state1]);
     const deferredState = useDeferredValue(stateDeferred);
+    console.group();
+    console.log('直接设置 state1', state1);
+    console.log('state1变化后通过useEffect设置state2', state2);
+
+    console.log('stateDelayed 由startTransition包裹');
+    console.log('stateDelayed', stateDelayed);
+    console.log('stateDelayed1 由useTransition的方法包裹');
+    console.log('stateDelayed1', stateDelayed1);
+    console.log('stateDelayed1是否被推迟 isPending', isPending);
+    console.log('stateDeferred 由useDeferredValue包裹 生成deferredState');
+    console.log('stateDeferred', stateDeferred);
+    console.log('deferredState', deferredState);
+    console.groupEnd();
     console.log(state1, state2, stateDelayed, stateDelayed1, isPending, stateDeferred, deferredState);
+
     return (
         <p
             onClick={() => {
@@ -399,17 +450,18 @@ const StartTransitionDemo: React.FC = () => {
                 setStateDeferred(state => state + 1);
             }}
         >
-            state1: {state1}
-            <br />
-            state2: {state2}
-            <br />
-            stateDelayed: {stateDelayed}
-            <br />
-            stateDelayed1: {stateDelayed1}
-            <br />
-            stateDeferred: {stateDeferred}
-            <br />
-            deferredState: {deferredState}
+            <div className='tip'>点击后直接修改state1</div>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <div className='tip'>state1变化后通过useEffect设置state2</div>
+            <ShowLabelValue lable='state2' value={state2}></ShowLabelValue>
+            <div className='tip'>stateDelayed 由startTransition包裹</div>
+            <ShowLabelValue lable='stateDelayed' value={stateDelayed}></ShowLabelValue>
+            <div className='tip'>stateDelayed1 由useTransition的方法包裹</div>
+            <ShowLabelValue lable='stateDelayed1' value={stateDelayed1}></ShowLabelValue>
+            <ShowLabelValue lable='stateDelayed1是否被推迟' value={isPending.toString()}></ShowLabelValue>
+            <div className='tip'>stateDeferred 由useDeferredValue包裹 生成deferredState</div>
+            <ShowLabelValue lable='stateDeferred' value={stateDeferred}></ShowLabelValue>
+            <ShowLabelValue lable='deferredState' value={deferredState}></ShowLabelValue>
         </p>
     );
 };
@@ -424,7 +476,21 @@ const startTransitionDemoString = `const StartTransitionDemo: React.FC = () => {
         setState2(state2 + 1);
     }, [state1]);
     const deferredState = useDeferredValue(stateDeferred);
+    console.group();
+    console.log('直接设置 state1', state1);
+    console.log('state1变化后通过useEffect设置state2', state2);
+
+    console.log('stateDelayed 由startTransition包裹');
+    console.log('stateDelayed', stateDelayed);
+    console.log('stateDelayed1 由useTransition的方法包裹');
+    console.log('stateDelayed1', stateDelayed1);
+    console.log('stateDelayed1是否被推迟 isPending', isPending);
+    console.log('stateDeferred 由useDeferredValue包裹 生成deferredState');
+    console.log('stateDeferred', stateDeferred);
+    console.log('deferredState', deferredState);
+    console.groupEnd();
     console.log(state1, state2, stateDelayed, stateDelayed1, isPending, stateDeferred, deferredState);
+
     return (
         <p
             onClick={() => {
@@ -438,12 +504,18 @@ const startTransitionDemoString = `const StartTransitionDemo: React.FC = () => {
                 setStateDeferred(state => state + 1);
             }}
         >
-            state1: {state1}<br />
-            state2: {state2}<br />
-            stateDelayed: {stateDelayed}<br />
-            stateDelayed1: {stateDelayed1}<br />
-            stateDeferred: {stateDeferred}<br />
-            deferredState: {deferredState}
+            <div className='tip'>点击后直接修改state1</div>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <div className='tip'>state1变化后通过useEffect设置state2</div>
+            <ShowLabelValue lable='state2' value={state2}></ShowLabelValue>
+            <div className='tip'>stateDelayed 由startTransition包裹</div>
+            <ShowLabelValue lable='stateDelayed' value={stateDelayed}></ShowLabelValue>
+            <div className='tip'>stateDelayed1 由useTransition的方法包裹</div>
+            <ShowLabelValue lable='stateDelayed1' value={stateDelayed1}></ShowLabelValue>
+            <ShowLabelValue lable='stateDelayed1是否被推迟' value={isPending.toString()}></ShowLabelValue>
+            <div className='tip'>stateDeferred 由useDeferredValue包裹 生成deferredState</div>
+            <ShowLabelValue lable='stateDeferred' value={stateDeferred}></ShowLabelValue>
+            <ShowLabelValue lable='deferredState' value={deferredState}></ShowLabelValue>
         </p>
     );
 };`;
@@ -451,27 +523,9 @@ const startTransitionDemoString = `const StartTransitionDemo: React.FC = () => {
 const StartTransitionDemo1: React.FC = () => {
     const [list, setList] = useState<any[]>([]);
     const [list1, setList1] = useState<any[]>([]);
-    // const deferredList = useDeferredValue(list1);
+
     return (
         <>
-            <div>
-                <input
-                    type='text'
-                    style={{ color: ' #666' }}
-                    onChange={e => {
-                        // setList1(new Array(10000).fill(e.target.value));
-                        startTransition(() => {
-                            setList1(new Array(1000).fill(e.target.value));
-                        });
-                    }}
-                />
-                <br />
-                <p style={{ width: '100%', height: '50px', overflow: 'auto', fontSize: '12px' }}>
-                    {list1.map((v, i) => (
-                        <span key={i}>{v}</span>
-                    ))}
-                </p>
-            </div>
             <div>
                 <Button
                     onClick={() => {
@@ -480,32 +534,74 @@ const StartTransitionDemo1: React.FC = () => {
                         });
                     }}
                 >
-                    渲染列表
+                    渲染长列表
                 </Button>
-                <br />
-                <p style={{ width: '100%', height: '50px', overflow: 'auto', fontSize: '12px' }}>
-                    {list.map((v, i) => (
-                        <span key={i}>{v}</span>
-                    ))}
-                </p>
             </div>
+            <p style={{ width: '100%', height: '50px', overflow: 'auto', fontSize: '12px' }}>
+                {list.map((v, i) => (
+                    <span key={i}>{v}</span>
+                ))}
+            </p>
+
+            <div className='w-full'>
+                <input
+                    className='w-full'
+                    type='text'
+                    style={{ color: ' #666' }}
+                    onChange={e => {
+                        startTransition(() => {
+                            setList1(new Array(1000).fill(e.target.value));
+                        });
+                    }}
+                />
+            </div>
+            <p style={{ width: '100%', height: '50px', overflow: 'auto', fontSize: '12px' }}>
+                {list1.map((v, i) => (
+                    <span key={i}>{v}</span>
+                ))}
+            </p>
         </>
     );
 };
 const startTransitionDemo1String = `const StartTransitionDemo1: React.FC = () => {
     const [list, setList] = useState<any[]>([]);
-    const [isPending, startTransition] = useTransition();
-    useEffect(() => {
-        // 使用了并发特性，开启并发更新
-        startTransition(() => {
-            setList(new Array(10000).fill(null));
-        });
-    }, []);
+    const [list1, setList1] = useState<any[]>([]);
+
     return (
         <>
-            {list.map((_, i) => (
-                <div key={i}>{i}</div>
-            ))}
+            <div>
+                <Button
+                    onClick={() => {
+                        startTransition(() => {
+                            setList(new Array(10000).fill(null));
+                        });
+                    }}
+                >
+                    渲染长列表
+                </Button>
+            </div>
+            <p style={{ width: '100%', height: '50px', overflow: 'auto', fontSize: '12px' }}>
+                {list.map((v, i) => (
+                    <span key={i}>{v}</span>
+                ))}
+            </p>
+            <div>
+                <input
+                    type='text'
+                    style={{ color: ' #666' }}
+                    onChange={e => {
+                        startTransition(() => {
+                            setList1(new Array(1000).fill(e.target.value));
+                        });
+                    }}
+                />
+            </div>
+            <br />
+            <p style={{ width: '100%', height: '50px', overflow: 'auto', fontSize: '12px' }}>
+                {list1.map((v, i) => (
+                    <span key={i}>{v}</span>
+                ))}
+            </p>
         </>
     );
 };`;
@@ -630,13 +726,13 @@ function App() {
                     ))}
                 </Select>
                 <Row style={{ minHeight: '50vh', padding: '20px', width: '100%' }} wrap={false}>
-                    <Col style={{ overflow: 'auto', width: '70%', maxWidth: '100%', textAlign: 'left', fontSize: '20px' }}>
+                    <Col style={{ overflow: 'auto', width: '70%', maxWidth: '100%', textAlign: 'left', fontSize: '18px' }}>
                         <SyntaxHighlighter language='typescript' style={monokaiSublime}>
                             {codeStringObj[selectVal] || ''}
                         </SyntaxHighlighter>
                     </Col>
                     <Col style={{ width: '30%', overflow: 'auto' }}>
-                        <Row align='middle' justify='center' style={{ height: '100%' }}>
+                        <Row style={{ height: '100%', padding: '20px', textAlign: 'left' }}>
                             <Aaaa />
                         </Row>
                     </Col>

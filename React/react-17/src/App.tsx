@@ -7,6 +7,14 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokaiSublime } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import React from 'react';
 
+const ShowLabelValue: React.FC<{ lable: string; value: string | number }> = ({ lable, value }) => {
+    return (
+        <p>
+            <span className='vl'>{lable}:</span> <span className='vr'>{value}</span>
+        </p>
+    );
+};
+
 let initViewNum = 0;
 let effectNum = 0;
 const InitView: React.FC = () => {
@@ -18,27 +26,32 @@ const InitView: React.FC = () => {
     });
 
     useEffect(() => {
-        console.log('InitView useEffect');
+        console.log('空数组依赖useEffect InitView useEffect');
         return () => {
-            console.log('InitView unUseEffect');
+            console.log('空数组依赖useEffect InitView unUseEffect');
         };
     }, []);
     useEffect(() => {
         effectNum += 1;
-        console.log('useEffectrCount', new Date().toJSON(), ++useEffectrCount.current);
-        sessionStorage.setItem('InitView_effectNum', effectNum + '');
+        console.log(`无依赖数组useEffect effectNum: ${effectNum}, useEffectrCount.current: ${++useEffectrCount.current}`);
     });
-    console.log(new Date().toJSON(), ++renderCount.current, ++initViewNum);
-    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum + ' ' + effectNum);
+
+    console.group();
+    console.log('initViewNum', ++initViewNum);
+    console.log('renderCount.current', ++renderCount.current);
+    console.groupEnd();
 
     return (
-        <p>
-            组件执行次数：{renderCount.current} - {initViewNum} - {effectNum}
+        <div>
+            <ShowLabelValue lable='initViewNum' value={initViewNum}></ShowLabelValue>
+            <ShowLabelValue lable='renderCount.current' value={renderCount.current}></ShowLabelValue>
+            <ShowLabelValue lable='effectNum' value={effectNum}></ShowLabelValue>
+
             <br />
             <span>
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
             </span>
-        </p>
+        </div>
     );
 };
 const initViewString = `let initViewNum = 0;
@@ -52,27 +65,32 @@ const InitView: React.FC = () => {
     });
 
     useEffect(() => {
-        console.log('InitView useEffect');
+        console.log('空数组依赖useEffect InitView useEffect');
         return () => {
-            console.log('InitView unUseEffect');
+            console.log('空数组依赖useEffect InitView unUseEffect');
         };
     }, []);
     useEffect(() => {
         effectNum += 1;
-        console.log('useEffectrCount', new Date().toJSON(), ++useEffectrCount.current);
-        sessionStorage.setItem('InitView_effectNum', effectNum + '');
+        console.log(\`无依赖数组useEffect effectNum: \${effectNum}, useEffectrCount.current: \${++useEffectrCount.current}\`);
     });
-    console.log(new Date().toJSON(), ++renderCount.current, ++initViewNum);
-    sessionStorage.setItem('InitView_renderCount', renderCount.current + ' ' + initViewNum + ' ' + effectNum);
+
+    console.group();
+    console.log('initViewNum', ++initViewNum);
+    console.log('renderCount.current', ++renderCount.current);
+    console.groupEnd();
 
     return (
-        <p>
-            组件执行次数：{renderCount.current} - {initViewNum} - {effectNum}
+        <div>
+            <ShowLabelValue lable='initViewNum' value={initViewNum}></ShowLabelValue>
+            <ShowLabelValue lable='renderCount.current' value={renderCount.current}></ShowLabelValue>
+            <ShowLabelValue lable='effectNum' value={effectNum}></ShowLabelValue>
+
             <br />
             <span>
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
             </span>
-        </p>
+        </div>
     );
 };`;
 
@@ -92,7 +110,6 @@ const EffectChange: React.FC = () => {
         setStateFun(state => state + 1);
     }, [state]);
     console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('EffectChange_renderCount', renderCount.current + '');
 
     return (
         <p>
@@ -102,8 +119,8 @@ const EffectChange: React.FC = () => {
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
             </span>
             <br />
-            <span>state1: {state1}</span>
-            <span>stateFun: {stateFun}</span>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <ShowLabelValue lable='stateFun' value={stateFun}></ShowLabelValue>
         </p>
     );
 };
@@ -114,7 +131,6 @@ const effectChangeString = `const EffectChange: React.FC = () => {
     const [stateFun, setStateFun] = useState(0);
     useEffect(() => {
         console.log('EffectChange useEffect');
-        setState(state => state + 1);
         return () => {
             console.log('EffectChange unUseEffect');
         };
@@ -124,7 +140,6 @@ const effectChangeString = `const EffectChange: React.FC = () => {
         setStateFun(state => state + 1);
     }, [state]);
     console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('EffectChange_renderCount', renderCount.current + '');
 
     return (
         <p>
@@ -134,8 +149,8 @@ const effectChangeString = `const EffectChange: React.FC = () => {
                 state: {state} <Button onClick={() => setState(state => state + 1)}>增加</Button>
             </span>
             <br />
-            <span>state1: {state1}</span>
-            <span>stateFun: {stateFun}</span>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <ShowLabelValue lable='stateFun' value={stateFun}></ShowLabelValue>
         </p>
     );
 };`;
@@ -148,18 +163,22 @@ const ClickChange: React.FC = () => {
         console.log('ClickChange useEffect');
         return () => {
             console.log('ClickChange unUseEffect');
-            sessionStorage.removeItem('ClickChange_renderCount');
         };
     }, []);
-    console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('ClickChange_renderCount', renderCount.current + '');
+    console.group();
+    console.log('renderCount.current', ++renderCount.current);
+    console.log('state1', state1);
+    console.log('state2', state2);
+    console.groupEnd();
 
     return (
         <div>
-            <p>组件执行次数：{renderCount.current}</p>
-            <p>state1：{state1}</p>
-            <p>state2：{state2}</p>
+            <ShowLabelValue lable='renderCount.current' value={renderCount.current}></ShowLabelValue>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <ShowLabelValue lable='state2' value={state2}></ShowLabelValue>
+
             <Button
+                className='w-full'
                 onClick={() => {
                     setState1(val => val + 1);
                     setState2(val => val + 1);
@@ -167,7 +186,9 @@ const ClickChange: React.FC = () => {
             >
                 批量更新 1 & 2
             </Button>
+
             <Button
+                className='w-full'
                 onClick={() => {
                     setTimeout(() => {
                         setState1(val => val + 1);
@@ -178,6 +199,7 @@ const ClickChange: React.FC = () => {
                 setTimeout中批量更新 1 & 2
             </Button>
             <Button
+                className='w-full'
                 onClick={() => {
                     flushSync(() => {
                         setState1(val => val + 1);
@@ -198,18 +220,22 @@ const clickChangeString = `const ClickChange: React.FC = () => {
         console.log('ClickChange useEffect');
         return () => {
             console.log('ClickChange unUseEffect');
-            sessionStorage.removeItem('ClickChange_renderCount');
         };
     }, []);
-    console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('ClickChange_renderCount', renderCount.current + '');
+    console.group();
+    console.log('renderCount.current', ++renderCount.current);
+    console.log('state1', state1);
+    console.log('state2', state2);
+    console.groupEnd();
 
     return (
         <div>
-            <p>组件执行次数：{renderCount.current}</p>
-            <p>state1：{state1}</p>
-            <p>state2：{state2}</p>
+            <ShowLabelValue lable='renderCount.current' value={renderCount.current}></ShowLabelValue>
+            <ShowLabelValue lable='state1' value={state1}></ShowLabelValue>
+            <ShowLabelValue lable='state2' value={state2}></ShowLabelValue>
+
             <Button
+                className='w-full'
                 onClick={() => {
                     setState1(val => val + 1);
                     setState2(val => val + 1);
@@ -217,7 +243,9 @@ const clickChangeString = `const ClickChange: React.FC = () => {
             >
                 批量更新 1 & 2
             </Button>
+
             <Button
+                className='w-full'
                 onClick={() => {
                     setTimeout(() => {
                         setState1(val => val + 1);
@@ -228,6 +256,7 @@ const clickChangeString = `const ClickChange: React.FC = () => {
                 setTimeout中批量更新 1 & 2
             </Button>
             <Button
+                className='w-full'
                 onClick={() => {
                     flushSync(() => {
                         setState1(val => val + 1);
@@ -274,10 +303,15 @@ class ClassComponent extends React.Component<any, { count1: number; count2: numb
         const { count1, count2 } = this.state;
         return (
             <div>
-                <Button onClick={this.handleClick1}>对象式更新</Button>
-                <Button onClick={this.handleClick2}>函数式更新</Button>
-                <div>count1: {count1}</div>
-                <div>count2: {count2}</div>
+                <ShowLabelValue lable='count1' value={count1}></ShowLabelValue>
+                <ShowLabelValue lable='count2' value={count2}></ShowLabelValue>
+                <br />
+                <Button className='w-full' onClick={this.handleClick1}>
+                    对象式更新
+                </Button>
+                <Button className='w-full' onClick={this.handleClick2}>
+                    函数式更新
+                </Button>
             </div>
         );
     }
@@ -315,14 +349,15 @@ const classComponentString = `class ClassComponent extends React.Component<any, 
         const { count1, count2 } = this.state;
         return (
             <div>
-                <Button onClick={this.handleClick1}>对象式更新</Button>
-                <Button onClick={this.handleClick2}>函数式更新</Button>
-                <div>count1: {count1}</div>
-                <div>count2: {count2}</div>
+                <ShowLabelValue lable='count1' value={count1}></ShowLabelValue>
+                <ShowLabelValue lable='count2' value={count2}></ShowLabelValue>
+                <br />
+                <Button className='w-full' onClick={this.handleClick1}>对象式更新</Button>
+                <Button className='w-full' onClick={this.handleClick2}>函数式更新</Button>
             </div>
         );
     }
-}`
+}`;
 
 const AsyncSetState: React.FC = () => {
     const renderCount = useRef(0);
@@ -339,7 +374,6 @@ const AsyncSetState: React.FC = () => {
         }, 1000);
     }, [state]);
     console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('AsyncSetState_renderCount', renderCount.current + '');
 
     return (
         <p>
@@ -358,21 +392,24 @@ const asyncSetStateString = `const AsyncSetState: React.FC = () => {
     }, []);
     useEffect(() => {
         setTimeout(() => {
-            setState(state => state + 1)
+            setState(state => state + 1);
         }, 1000);
-    }, [state])
+    }, [state]);
     console.log(Date.now(), ++renderCount.current);
-    sessionStorage.setItem('AsyncSetState_renderCount', renderCount.current + '');
 
-    return <p>组件执行次数：{renderCount.current}, 异步获取值：</p>;
+    return (
+        <p>
+            组件执行次数：{renderCount.current}, 异步设置值：{state}
+        </p>
+    );
 };`;
 
 const EmptyComponent: React.FC = () => {
-    return  undefined as unknown as null;
+    return undefined as unknown as null;
 };
 const emptyComponentString = `const EmptyComponent: React.FC = () => {
     return  undefined as unknown as null;
-};`
+};`;
 
 type SelectItemArr = ['InitView', 'EffectChange', 'ClickChange', 'ClassComponent', 'AsyncSetState', 'EmptyComponent'];
 type SelectItem = typeof selectItemArr[number];
@@ -383,7 +420,7 @@ const selectItemLabelObj: Record<SelectItem, string> = {
     ClickChange: '点击事件设置多个状态',
     ClassComponent: '批处理对class组件的一点影响',
     AsyncSetState: '异步设置状态',
-    EmptyComponent: '空组件'
+    EmptyComponent: '空组件',
 };
 const codeStringObj: Record<SelectItem, string> = {
     InitView: initViewString,
@@ -425,7 +462,7 @@ function App() {
                         </SyntaxHighlighter>
                     </Col>
                     <Col flex={1}>
-                        <Row align='middle' justify='center' style={{ height: '100%' }}>
+                        <Row style={{ height: '100%', padding: '20px', textAlign: 'left' }}>
                             <Aaaa />
                         </Row>
                     </Col>
