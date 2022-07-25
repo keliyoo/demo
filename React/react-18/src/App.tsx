@@ -732,7 +732,7 @@ function App() {
                         </SyntaxHighlighter>
                     </Col>
                     <Col style={{ width: '30%', overflow: 'auto' }}>
-                        <Row style={{ height: '100%', padding: '20px', textAlign: 'left' }}>
+                        <Row style={{ height: '100%', padding: '20px', textAlign: 'left', fontSize: '22px' }}>
                             <Aaaa />
                         </Row>
                     </Col>

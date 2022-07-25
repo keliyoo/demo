@@ -462,7 +462,7 @@ function App() {
                         </SyntaxHighlighter>
                     </Col>
                     <Col flex={1}>
-                        <Row style={{ height: '100%', padding: '20px', textAlign: 'left' }}>
+                        <Row style={{ height: '100%', padding: '20px', textAlign: 'left', fontSize: '22px' }}>
                             <Aaaa />
                         </Row>
                     </Col>
